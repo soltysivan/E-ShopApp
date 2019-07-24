@@ -84,18 +84,32 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--FLYWAY-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
     </dependencies>
 
-    <!--Maven Plugin-->
+
     <build>
 
         <finalName>shop-shop</finalName>
 
         <plugins>
+            <!--Maven Plugin-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--FLYWAY Plugin-->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+            </plugin>
+
         </plugins>
     </build>
 
