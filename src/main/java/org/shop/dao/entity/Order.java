@@ -22,7 +22,7 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    private User buyer;
+    private ApplicationUser buyer;
 
     @Column(length = 255)
     @Size(max = 255)

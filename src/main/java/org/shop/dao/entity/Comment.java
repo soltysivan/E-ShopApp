@@ -26,7 +26,7 @@ public class Comment {
     @ToString.Exclude
     @JsonIgnore
     @ManyToOne
-    private User authorComments;
+    private ApplicationUser authorComments;
 
     @ToString.Exclude
     @JsonIgnore

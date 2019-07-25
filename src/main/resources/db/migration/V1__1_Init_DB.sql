@@ -65,7 +65,7 @@ create table usr (
   active boolean not null,
   date timestamp,
   login varchar(45),
-  password varchar(45),
+  password varchar(255),
   primary key (id)
 );
 
