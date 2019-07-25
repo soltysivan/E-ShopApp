@@ -7,11 +7,11 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Entity
 @Data
+@Table(name = "comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +26,11 @@ public class Comment {
     @ToString.Exclude
     @JsonIgnore
     @ManyToOne
-    private ApplicationUser authorComments;
+    private User authorComments;
 
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany(mappedBy = "comments")
-    private List<Product> products;
+    @ManyToOne
+    private Product product;
 
 }

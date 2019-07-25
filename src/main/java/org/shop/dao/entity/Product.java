@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,10 +41,7 @@ public class Product {
 
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "products_comments",
-            joinColumns =@JoinColumn (name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id"))
+    @OneToMany(mappedBy = "product")
     private List<Comment> comments;
 
     @ToString.Exclude

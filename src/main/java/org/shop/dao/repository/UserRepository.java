@@ -1,15 +1,15 @@
 package org.shop.dao.repository;
 
-import org.shop.dao.entity.ApplicationUser;
+import org.shop.dao.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<ApplicationUser> findByLogin(String login);
+    Optional<User> findByLogin(String login);
 
-    Optional<ApplicationUser> findById(Long id);
+    Optional<User> findById(Long id);
 }

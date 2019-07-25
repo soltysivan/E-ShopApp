@@ -2,7 +2,7 @@ package org.shop.service;
 
 import org.shop.dao.entity.Comment;
 import org.shop.dao.entity.Product;
-import org.shop.dao.entity.ApplicationUser;
+import org.shop.dao.entity.User;
 import org.shop.dao.repository.CommentRepository;
 import org.shop.dao.repository.ProductRepository;
 import org.shop.dao.repository.UserRepository;
@@ -11,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,18 +34,13 @@ public class CommentService {
     }
 
     public Comment saveComment(Long productId, Long authorId, Comment comment) {
-        ApplicationUser author = userRepository.findById(authorId)
+        User author = userRepository.findById(authorId)
                 .orElseThrow(NotFoundExceptions::new);
         Product product = productRepository.findById(productId)
                 .orElseThrow(NotFoundExceptions::new);
         comment.setAuthorComments(author);
+        comment.setProduct(product);
         commentRepository.save(comment);
-        Long id = comment.getId();
-        List<Product> products = new ArrayList<>();
-        products.add(product);
-        comment.setProducts(products);
-        product.getComments().add(comment);
-        productRepository.save(product);
         return comment;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "ordr")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    private ApplicationUser buyer;
+    private User buyer;
 
     @Column(length = 255)
     @Size(max = 255)

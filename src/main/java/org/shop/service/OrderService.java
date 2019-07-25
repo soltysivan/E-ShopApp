@@ -1,6 +1,6 @@
 package org.shop.service;
 
-import org.shop.dao.entity.ApplicationUser;
+import org.shop.dao.entity.User;
 import org.shop.dao.entity.Order;
 import org.shop.dao.repository.OrderRepository;
 import org.shop.dao.repository.UserRepository;
@@ -21,9 +21,9 @@ public class OrderService {
     private UserRepository userRepository;
 
     public Order saveOrder(Long userId, Order order) {
-        ApplicationUser applicationUser = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundExceptions::new);
-        order.setBuyer(applicationUser);
+        order.setBuyer(user);
         return orderRepository.save(order);
     }
 
@@ -35,9 +35,9 @@ public class OrderService {
     }
 
     public List<Order> findAllOrdersByUser(Long userId) {
-        ApplicationUser applicationUser = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundExceptions::new);
-        List<Order> orders = applicationUser.getOrders();
+        List<Order> orders = user.getOrders();
         return orders;
     }
 }
