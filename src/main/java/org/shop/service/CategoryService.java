@@ -16,7 +16,8 @@ public class CategoryService {
     public Category update(Long id, Category category) {
         Category categoryFromDB = categoriesRepositories.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        BeanUtils.copyProperties(category, categoryFromDB, "id", "products");
+        categoryFromDB.setDescription(category.getDescription());
+        categoryFromDB.setName(category.getName());
         return categoriesRepositories.save(categoryFromDB);
     }
 }

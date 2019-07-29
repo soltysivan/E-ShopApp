@@ -24,7 +24,8 @@ public class ArticleService {
     public Article update(Long articleId, Article article) {
         Article articleDB = articleRepository.findById(articleId)
                 .orElseThrow(NotFoundExceptions::new);
-        BeanUtils.copyProperties(article, articleDB, "id", "product");
+        articleDB.setText(article.getText());
+        articleDB.setName(article.getName());
         return articleRepository.save(articleDB);
     }
 

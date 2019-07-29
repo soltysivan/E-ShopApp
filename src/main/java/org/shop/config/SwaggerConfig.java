@@ -21,9 +21,9 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     private static final String SWAGGER_API_VERSION = "1,0";
-    private static final String LICENSE_TEXT = "License";
-    private static final String TITLE = "Product rest appi";
-    private static final String DESCRIPTION = "RestFULL APPI for products";
+    private static final String LICENSE_TEXT = "Licensed by Soltys";
+    private static final String TITLE = "E-Shop rest api";
+    private static final String DESCRIPTION = "RestFULL API for products of its categories and articles ";
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()

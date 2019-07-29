@@ -6,7 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,11 +18,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime creationDate;
+    @Column(name = "created_at")
+    private Date createdAt;
 
     @JsonIgnore
     @ManyToOne
-    private User buyer;
+    private User user;
 
     @Column(length = 255)
     @Size(max = 255)
@@ -32,11 +33,5 @@ public class Order {
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-
-    public enum Status {
-        PENDING,
-        PROCESSING,
-        DONE
-    }
 
 }

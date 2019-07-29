@@ -39,7 +39,8 @@ public class OrderItemService {
     public OrderItem updateOrderItem(Long id, OrderItem orderItem) {
         OrderItem orderItemFromDB = orderItemRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        BeanUtils.copyProperties(orderItem, orderItemFromDB, "id", "order");
+        orderItemFromDB.setQuantity(orderItem.getQuantity());
+        orderItemFromDB.setProduct(orderItem.getProduct());
         return orderItemRepository.save(orderItemFromDB);
     }
 }

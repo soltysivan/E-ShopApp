@@ -7,41 +7,66 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "users")
-public class User{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 45)
     @Size(max = 45)
-    private String login;
+    private String username;
 
+    @Column(name = "first_name")
+    private String firstName;
 
-    private String password;
+    @Column(name = "last_name")
+    private String lastName;
+
+    private String email;
+
+    private byte[] password;
 
     private boolean active;
 
-    private LocalDateTime date;
+    @Column(name = "created_at")
+    private Date createdAt;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "authorComments", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
+
+
+    //User Role//
+    public enum Role{
+        ADMIN ("ADMIN"),
+        USER ("USER");
+
+        private final String value;
+
+        Role(String role){
+            this.value = role;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+    }
 }

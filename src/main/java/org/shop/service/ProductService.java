@@ -41,7 +41,11 @@ public class ProductService {
     public Product update(Long id, Product product) {
         Product productFromDB = productRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        BeanUtils.copyProperties(product, productFromDB, "id", "category", "articles", "comments", "orderItems");
+        productFromDB.setDescription(product.getDescription());
+        productFromDB.setName(product.getName());
+        productFromDB.setPhoto(product.getPhoto());
+        productFromDB.setPrice(product.getPrice());
+        productFromDB.setQuantity(product.getQuantity());
         return productRepository.save(productFromDB);
     }
 

@@ -23,14 +23,15 @@ public class OrderService {
     public Order saveOrder(Long userId, Order order) {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundExceptions::new);
-        order.setBuyer(user);
+        order.setUser(user);
         return orderRepository.save(order);
     }
 
     public Order updateOrder(Long id, Order order) {
         Order orderFromDb = orderRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        BeanUtils.copyProperties(order, orderFromDb, "id", "orderItems");
+        orderFromDb.setComment(order.getComment());
+        orderFromDb.setOrderItems(order.getOrderItems());
         return orderRepository.save(orderFromDb);
     }
 

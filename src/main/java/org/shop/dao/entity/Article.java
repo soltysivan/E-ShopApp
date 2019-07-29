@@ -1,11 +1,12 @@
 package org.shop.dao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
@@ -22,20 +23,12 @@ public class Article {
 
     private String text;
 
-    private LocalDateTime creationDate;
+    @Column(name = "created_at")
+    private Date createdAt;
 
+    @JsonIgnore
     @ToString.Exclude
     @ManyToOne
     private Product product;
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", text='" + text + '\'' +
-                ", creationDate=" + creationDate +
-                ", product=" + product +
-                '}';
-    }
 }

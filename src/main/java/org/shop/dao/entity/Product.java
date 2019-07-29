@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -34,6 +35,8 @@ public class Product {
     @ManyToOne
     private Category category;
 
+    private String photo;
+
     @ToString.Exclude
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -41,7 +44,7 @@ public class Product {
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Comment> comments;
 
     @ToString.Exclude
