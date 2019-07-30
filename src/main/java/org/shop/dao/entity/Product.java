@@ -49,6 +49,6 @@ public class Product {
 
     @ToString.Exclude
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<Article> articles;
 }
