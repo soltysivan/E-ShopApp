@@ -6,11 +6,14 @@ import org.shop.dao.repository.CategoryRepository;
 import org.shop.dao.repository.OrderItemRepository;
 import org.shop.dao.repository.ProductRepository;
 import org.shop.exceptions.NotFoundExceptions;
-import org.springframework.beans.BeanUtils;
+import org.shop.model.input.ProductInputModel;
+import org.shop.model.output.ProductOutputModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,20 +28,25 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoriesRepositories;
 
-    public List<Product> findAllByCategory(Long id) {
-        return productRepository.findAll()
+    public List<ProductOutputModel> findAllByCategory(Long id) {
+        List<Product> products = productRepository.findAll()
                 .stream().filter(product -> product.getCategory().getId().equals(id))
                 .collect(Collectors.toList());
+        List<ProductOutputModel> productOutputModels = new ArrayList<>();
+        products.forEach(product -> productOutputModels.add(ProductOutputModel.of(product)));
+        return productOutputModels;
     }
 
-    public Product saveProduct(Product product, Long categoryId) {
-        Category category = categoriesRepositories.findById(categoryId)
+    public ProductOutputModel saveProduct(ProductInputModel productInputModel) {
+        Category category = categoriesRepositories.findById(productInputModel.getCategoryId())
                 .orElseThrow(NotFoundExceptions::new);
+        Product product = ProductInputModel.of(productInputModel);
         product.setCategory(category);
-        return productRepository.save(product);
+        productRepository.save(product);
+        return ProductOutputModel.of(product);
     }
 
-    public Product update(Long id, Product product) {
+    public ProductOutputModel updateProduct(Long id, Product product) {
         Product productFromDB = productRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
         productFromDB.setDescription(product.getDescription());
@@ -46,8 +54,21 @@ public class ProductService {
         productFromDB.setPhoto(product.getPhoto());
         productFromDB.setPrice(product.getPrice());
         productFromDB.setQuantity(product.getQuantity());
-        return productRepository.save(productFromDB);
+        productRepository.save(productFromDB);
+        return ProductOutputModel.of(product);
     }
 
 
+    public List<ProductOutputModel> findAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductOutputModel> productOutputModels = new ArrayList<>();
+        products.forEach(product -> productOutputModels.add(ProductOutputModel.of(product)));
+        return productOutputModels;
+    }
+
+    public ProductOutputModel findProductById(Long paroductsId) {
+        ProductOutputModel productOutputModel = ProductOutputModel.of(productRepository.findById(paroductsId)
+                .orElseThrow(NotFoundExceptions::new));
+        return productOutputModel;
+    }
 }

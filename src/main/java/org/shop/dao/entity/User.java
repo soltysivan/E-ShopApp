@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 

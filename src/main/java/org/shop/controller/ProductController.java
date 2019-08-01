@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.shop.dao.entity.Product;
 import org.shop.dao.repository.ProductRepository;
+import org.shop.model.input.ProductInputModel;
+import org.shop.model.output.ProductOutputModel;
 import org.shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shop")
+@RequestMapping("/api/shop/products")
 @Api(value = "Product", description = "All functions width Product", basePath = "/api/shop")
 public class ProductController {
 
@@ -26,42 +28,49 @@ public class ProductController {
     private ProductRepository productRepository;
 
     @ApiOperation(value = "Get all products")
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts(){
-        List<Product> products = productRepository.findAll();
+    @GetMapping
+    public ResponseEntity<List<ProductOutputModel>> getAllProducts(){
+        List<ProductOutputModel> products = productService.findAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all products by category pram: id")
-    @GetMapping("/categories/{categoryId}/products")
-    public ResponseEntity<List<Product>> getAllProductsByCategory(
-            @ApiParam(value = "Category param id", example = "1", required = true) @RequestParam Long categoryId){
-        List<Product> products = productService.findAllByCategory(categoryId);
+    @GetMapping("categories/{categoriesId}")
+    public ResponseEntity<List<ProductOutputModel>> getAllProductsByCategory(
+            @ApiParam(value = "Category param id", example = "1", required = true) @RequestParam Long categoriesId){
+        List<ProductOutputModel> products = productService.findAllByCategory(categoriesId);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Create new product")
-    @PostMapping("/categories/{categoryId}/product")
-    private ResponseEntity<Product> createNewProduct(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoryId,
-            @ApiParam(value = "Request body Product", required = true)@Valid @RequestBody Product product){
-        productService.saveProduct(product, categoryId);
+    @ApiOperation(value = "Get product by id")
+    @GetMapping("{productsId}")
+    public ResponseEntity<ProductOutputModel> getProductById(
+            @ApiParam(value = "Product param id", example = "1")@PathVariable Long productsId){
+        ProductOutputModel product = productService.findProductById(productsId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create new product")
+    @PostMapping
+    private ResponseEntity<ProductOutputModel> createNewProduct(
+            @ApiParam(value = "Request body Product", required = true)@Valid @RequestBody ProductInputModel productInputModel){
+        ProductOutputModel product = productService.saveProduct(productInputModel);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    }
+
     @ApiOperation(value = "Update product")
-    @PutMapping("/products/{productId}")
-    public ResponseEntity<Product> updateProducts(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productId,
+    @PutMapping("{productsId}")
+    public ResponseEntity<ProductOutputModel> updateProducts(
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productsId,
             @ApiParam(value = "Request body Product", required = true)@Valid @RequestBody Product product){
-        Product productDB = productService.update(productId, product);
+        ProductOutputModel productDB = productService.updateProduct(productsId, product);
         return new ResponseEntity<>(productDB, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete product by param: id")
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("{productsId}")
     public void deleteProduct(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productId){
-        productRepository.deleteById(productId);
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productsId){
+        productRepository.deleteById(productsId);
     }
 }

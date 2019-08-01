@@ -31,4 +31,9 @@ public class Article {
     @ManyToOne
     private Product product;
 
+    public Article(String name, String text, Date createdAt) {
+        this.name = name;
+        this.text = text;
+        this.createdAt = createdAt;
+    }
 }

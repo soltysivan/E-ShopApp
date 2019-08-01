@@ -2,6 +2,8 @@ package org.shop.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "categories")
 public class Category {
     @Id
@@ -31,4 +34,8 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    public Category(String name, String  description) {
+        this.name = name;
+        this.description = description;
+    }
 }
