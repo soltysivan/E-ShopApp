@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.shop.dao.entity.Comment;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Getter
 public class CommentOutputModel {
@@ -35,6 +36,6 @@ public class CommentOutputModel {
                 comment.getUpdatedAt(),
                 comment.getUser().getId(),
                 comment.getProduct().getId(),
-                comment.getComment());
+                Optional.ofNullable(comment.getParent()).map(Comment::getId).orElse(0L));
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,16 +45,16 @@ public class ProductService {
         return ProductOutputModel.of(product);
     }
 
-    public ProductOutputModel updateProduct(Long id, Product product) {
+    public ProductOutputModel updateProduct(Long id, ProductInputModel productInputModel) {
         Product productFromDB = productRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        productFromDB.setDescription(product.getDescription());
-        productFromDB.setName(product.getName());
-        productFromDB.setPhoto(product.getPhoto());
-        productFromDB.setPrice(product.getPrice());
-        productFromDB.setQuantity(product.getQuantity());
+        productFromDB.setDescription(productInputModel.getDescription());
+        productFromDB.setName(productInputModel.getName());
+        productFromDB.setPhoto(productInputModel.getPhoto());
+        productFromDB.setPrice(productInputModel.getPrice());
+        productFromDB.setQuantity(productInputModel.getQuantity());
         productRepository.save(productFromDB);
-        return ProductOutputModel.of(product);
+        return ProductOutputModel.of(productFromDB);
     }
 
 

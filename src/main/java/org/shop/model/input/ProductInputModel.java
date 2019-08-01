@@ -8,7 +8,7 @@ import org.shop.dao.entity.Product;
 @Setter
 public class ProductInputModel {
     private String name;
-    private int prise;
+    private int price;
     private int quantity;
     private String description;
     private String photo;
@@ -17,7 +17,7 @@ public class ProductInputModel {
     public static Product of(ProductInputModel model){
         return new Product(
                 model.getName(),
-                model.getPrise(),
+                model.getPrice(),
                 model.getQuantity(),
                 model.getDescription(),
                 model.getPhoto());

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shop/products")
-@Api(value = "Product", description = "All functions width Product", basePath = "/api/shop")
+@Api(value = "Product", description = "All functions width Product", basePath = "/api/shop/products")
 public class ProductController {
 
     @Autowired
@@ -35,18 +35,18 @@ public class ProductController {
     }
 
     @ApiOperation(value = "Get all products by category pram: id")
-    @GetMapping("categories/{categoriesId}")
+    @GetMapping("categories/{categoryId}")
     public ResponseEntity<List<ProductOutputModel>> getAllProductsByCategory(
-            @ApiParam(value = "Category param id", example = "1", required = true) @RequestParam Long categoriesId){
-        List<ProductOutputModel> products = productService.findAllByCategory(categoriesId);
+            @ApiParam(value = "Category param id", example = "1", required = true) @RequestParam Long categoryId){
+        List<ProductOutputModel> products = productService.findAllByCategory(categoryId);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get product by id")
-    @GetMapping("{productsId}")
+    @GetMapping("{productId}")
     public ResponseEntity<ProductOutputModel> getProductById(
-            @ApiParam(value = "Product param id", example = "1")@PathVariable Long productsId){
-        ProductOutputModel product = productService.findProductById(productsId);
+            @ApiParam(value = "Product param id", example = "1")@PathVariable Long productId){
+        ProductOutputModel product = productService.findProductById(productId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
@@ -59,18 +59,18 @@ public class ProductController {
     }
 
     @ApiOperation(value = "Update product")
-    @PutMapping("{productsId}")
+    @PutMapping("{productId}")
     public ResponseEntity<ProductOutputModel> updateProducts(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productsId,
-            @ApiParam(value = "Request body Product", required = true)@Valid @RequestBody Product product){
-        ProductOutputModel productDB = productService.updateProduct(productsId, product);
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productId,
+            @ApiParam(value = "Request body Product", required = true)@Valid @RequestBody ProductInputModel productInputModel){
+        ProductOutputModel productDB = productService.updateProduct(productId, productInputModel);
         return new ResponseEntity<>(productDB, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete product by param: id")
-    @DeleteMapping("{productsId}")
+    @DeleteMapping("{productId}")
     public void deleteProduct(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productsId){
-        productRepository.deleteById(productsId);
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long productId){
+        productRepository.deleteById(productId);
     }
 }

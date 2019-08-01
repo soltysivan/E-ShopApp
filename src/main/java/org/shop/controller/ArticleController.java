@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shop/articles")
-@Api(value = "Article", description = "Article to product", basePath = "/api/shop")
+@Api(value = "Article", description = "Article to product", basePath = "/api/shop/articles")
 public class ArticleController {
 
     @Autowired
@@ -29,18 +29,18 @@ public class ArticleController {
     private ArticleRepository articleRepository;
 
     @ApiOperation(value = "Get all articles", response = Article.class)
-    @GetMapping("/products/{productsId}")
+    @GetMapping("/products/{productId}")
     public ResponseEntity<List<ArticleOutputModel>> getAllArticlesByProduct(
-            @ApiParam(value = "Product param id", example = "1")@PathVariable Long productsId){
-        List<ArticleOutputModel> articles = articleService.findAllByProductId(productsId);
+            @ApiParam(value = "Product param id", example = "1")@PathVariable Long productId){
+        List<ArticleOutputModel> articles = articleService.findAllByProductId(productId);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get article by param id")
-    @GetMapping("{articlesId}")
+    @GetMapping("{articleId}")
     public ResponseEntity<ArticleOutputModel> getArticleById(
-            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articlesId){
-        ArticleOutputModel article = articleService.findArticleById(articlesId);
+            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articleId){
+        ArticleOutputModel article = articleService.findArticleById(articleId);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
@@ -53,18 +53,18 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "Update articles to category")
-    @PutMapping("{articlesId}")
+    @PutMapping("{articleId}")
     public ResponseEntity<ArticleOutputModel> updateArticle(
-            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articlesId,
+            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articleId,
             @ApiParam(value = "Request body Article ", required = true)@Valid @RequestBody Article article){
-        ArticleOutputModel articleDB = articleService.update(articlesId, article);
+        ArticleOutputModel articleDB = articleService.update(articleId, article);
         return new ResponseEntity<>(articleDB, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete article by param: id")
-    @DeleteMapping("{articlesId}")
+    @DeleteMapping("{articleId}")
     public void deleteArticle(
-            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articlesId){
-        articleRepository.deleteById(articlesId);
+            @ApiParam(value = "Article param id", example = "1")@PathVariable Long articleId){
+        articleRepository.deleteById(articleId);
     }
 }

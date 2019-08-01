@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -49,27 +50,37 @@ public class CommentService {
         return CommentOutputModel.of(comment);
     }
 
-    public Comment updateComment(Long id, Comment comment) {
+    public CommentOutputModel updateComment(Long id, String text) {
         Comment commentFromDB = commentRepository.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
-        commentFromDB.setText(comment.getText());
-        return commentRepository.save(commentFromDB);
+        commentFromDB.setText(text);
+        commentFromDB.setUpdatedAt(new Date());
+        commentRepository.save(commentFromDB);
+        return CommentOutputModel.of(commentFromDB);
     }
 
-    public Comment saveCommentsToComment(Long commentId, Comment comment) {
-        Comment commentFromDb = commentRepository.findById(commentId)
+    public CommentOutputModel saveCommentsToComment(CommentInputModel commentInputModel) {
+        Comment saved = commentRepository.findById(commentInputModel.getComment_id())
                 .orElseThrow(NotFoundExceptions::new);
-        comment.setUser(commentFromDb.getUser());
-        comment.setProduct(null);
-        comment.setComment(commentFromDb.getId());
+        Comment comment = CommentInputModel.of(commentInputModel);
+        comment.setUser(saved.getUser());
+        comment.setProduct(saved.getProduct());
+        comment.setParent(saved);
         commentRepository.save(comment);
-        return comment;
+        return CommentOutputModel.of(comment);
     }
 
     public List<CommentOutputModel> findAllComments() {
         List<Comment> comments = commentRepository.findAll();
         List<CommentOutputModel> commentOutputModels = new ArrayList<>();
         comments.forEach(comment -> commentOutputModels.add(CommentOutputModel.of(comment)));
+        return commentOutputModels;
+    }
+
+    public List<CommentOutputModel> findAllByParent(Long parentId) {
+        List<Comment> comments = commentRepository.findByParentId(parentId);
+        List<CommentOutputModel> commentOutputModels = new ArrayList<>();
+         comments.forEach(comment -> commentOutputModels.add(CommentOutputModel.of(comment)));
         return commentOutputModels;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shop/categories")
-@Api(value = "Category", description = "Category of product", basePath = "/api/shop")
+@Api(value = "Category", description = "Category of product", basePath = "/api/shop/categories")
 public class CategoryController {
 
     @Autowired
@@ -36,10 +36,10 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "Get category by: id")
-    @GetMapping("{categoriesId}")
+    @GetMapping("{categoryId}")
     public ResponseEntity<Category> getCategoryById(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoriesId){
-        Category category = categoriesRepositories.findById(categoriesId)
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoryId){
+        Category category = categoriesRepositories.findById(categoryId)
                 .orElseThrow(NotFoundExceptions::new);
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
@@ -53,18 +53,18 @@ public class CategoryController {
     }
 
     @ApiOperation(value = "Update category")
-    @PutMapping("{categoriesId}")
+    @PutMapping("{categoryId}")
     public ResponseEntity<Category> updateCategories(
-            @ApiParam(value = "Category param id", example = "1") @PathVariable Long categoriesId,
+            @ApiParam(value = "Category param id", example = "1") @PathVariable Long categoryId,
             @ApiParam(value = "Request body Category", required = true)@Valid @RequestBody Category category){
-        Category categoryDB = categoryService.update(categoriesId, category);
+        Category categoryDB = categoryService.update(categoryId, category);
         return new ResponseEntity<>(categoryDB, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete category by category param: id")
-    @DeleteMapping("{categoriesId}")
+    @DeleteMapping("{categoryId}")
     public void deleteCategory(
-            @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoriesId){
-        categoriesRepositories.deleteById(categoriesId);
+            @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoryId){
+        categoriesRepositories.deleteById(categoryId);
     }
 }
