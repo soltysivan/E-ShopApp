@@ -54,18 +54,18 @@ public class User {
 
     //User Role//
     public enum Role{
-        ADMIN ("ADMIN"),
-        USER ("USER");
+        admin,
+        user;
 
-        private final String value;
-
-        Role(String role){
-            this.value = role;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
+//        private final String value;
+//
+//        Role(String role){
+//            this.value = role;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return this.value;
+//        }
     }
 }

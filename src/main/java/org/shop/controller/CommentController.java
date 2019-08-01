@@ -3,6 +3,7 @@ package org.shop.controller;
 import org.shop.dao.entity.Comment;
 import org.shop.dao.repository.CommentRepository;
 import org.shop.dao.repository.ProductRepository;
+import org.shop.model.input.CommentInputModel;
 import org.shop.model.output.CommentOutputModel;
 import org.shop.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shop")
+@RequestMapping("/api/shop/comments")
 public class CommentController {
 
     @Autowired
@@ -26,23 +27,22 @@ public class CommentController {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping("/comments")
-    public ResponseEntity<List<Comment>> getAll(){
-        return new ResponseEntity<>(commentRepository.findAll(), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<CommentOutputModel>> getAll(){
+        List<CommentOutputModel> commentOutputModels = commentService.findAllComments();
+        return new ResponseEntity<>(commentOutputModels, HttpStatus.OK);
     }
 
-    @GetMapping("/products/{productId}/comments")
-    public ResponseEntity<List<Comment>> getAllCommentsByProduct(@PathVariable Long productId){
-        List<Comment> comments = commentService.findAllCommentsByProduct(productId);
+    @GetMapping("products/{productId}")
+    public ResponseEntity<List<CommentOutputModel>> getAllCommentsByProduct(@PathVariable Long productId){
+        List<CommentOutputModel> comments = commentService.findAllCommentsByProduct(productId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
-    @PostMapping("/products/{productId}/authors/{authorId}/comments")
-    public ResponseEntity<CommentOutputModel> createNewComment(@PathVariable Long productId,
-                                                               @PathVariable Long authorId,
-                                                               @Valid @RequestBody Comment comment){
-        CommentOutputModel commentFromDB = CommentOutputModel.of(commentService.saveComment(productId, authorId, comment));
-        return new ResponseEntity<>(commentFromDB, HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<CommentOutputModel> createNewComment(@Valid @RequestBody CommentInputModel commentInputModel){
+        CommentOutputModel commentFromDB = commentService.saveComment(commentInputModel);
+        return new ResponseEntity<>(commentFromDB, HttpStatus.CREATED);
     }
 
     @PostMapping("/comments/{commentId}/comment")

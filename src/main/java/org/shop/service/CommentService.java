@@ -7,9 +7,12 @@ import org.shop.dao.repository.CommentRepository;
 import org.shop.dao.repository.ProductRepository;
 import org.shop.dao.repository.UserRepository;
 import org.shop.exceptions.NotFoundExceptions;
+import org.shop.model.input.CommentInputModel;
+import org.shop.model.output.CommentOutputModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,22 +28,25 @@ public class CommentService {
     private UserRepository userRepository;
 
 
-    public List<Comment> findAllCommentsByProduct(Long productId) {
+    public List<CommentOutputModel> findAllCommentsByProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(NotFoundExceptions::new);
         List<Comment> comments = product.getComments();
-        return comments;
+        List<CommentOutputModel> commentOutputModels = new ArrayList<>();
+        comments.forEach(comment -> commentOutputModels.add(CommentOutputModel.of(comment)));
+        return commentOutputModels;
     }
 
-    public Comment saveComment(Long productId, Long authorId, Comment comment) {
-        User author = userRepository.findById(authorId)
+    public CommentOutputModel saveComment(CommentInputModel commentInputModel) {
+        User author = userRepository.findById(commentInputModel.getUserId())
                 .orElseThrow(NotFoundExceptions::new);
-        Product product = productRepository.findById(productId)
+        Product product = productRepository.findById(commentInputModel.getProductId())
                 .orElseThrow(NotFoundExceptions::new);
+        Comment comment = CommentInputModel.of(commentInputModel);
         comment.setUser(author);
         comment.setProduct(product);
         commentRepository.save(comment);
-        return comment;
+        return CommentOutputModel.of(comment);
     }
 
     public Comment updateComment(Long id, Comment comment) {
@@ -58,5 +64,12 @@ public class CommentService {
         comment.setComment(commentFromDb.getId());
         commentRepository.save(comment);
         return comment;
+    }
+
+    public List<CommentOutputModel> findAllComments() {
+        List<Comment> comments = commentRepository.findAll();
+        List<CommentOutputModel> commentOutputModels = new ArrayList<>();
+        comments.forEach(comment -> commentOutputModels.add(CommentOutputModel.of(comment)));
+        return commentOutputModels;
     }
 }

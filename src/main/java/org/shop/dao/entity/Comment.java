@@ -26,6 +26,9 @@ public class Comment {
     @Column(name = "created_at")
     private Date createdAt;
 
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
     @JsonIgnore
     @ToString.Exclude
     @ManyToOne
@@ -39,4 +42,9 @@ public class Comment {
     @Column(name = "comment_id")
     private Long comment;
 
+    public Comment(String text, Date createdAt, Date updatedAt) {
+        this.text = text;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }

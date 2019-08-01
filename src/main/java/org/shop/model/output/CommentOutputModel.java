@@ -12,14 +12,18 @@ public class CommentOutputModel {
     private final Long id;
     private final String text;
     private final Date createdAt;
-    private final String username;
+    private final Date updatedAt;
+    private final Long userId;
+    private final Long productId;
     private final Long commentId;
 
-    public CommentOutputModel(Long id, String text, Date createdAt, String username, Long commentId){
+    public CommentOutputModel(Long id, String text, Date createdAt, Date updatedAt, Long userId, Long productId, Long commentId) {
         this.id = id;
         this.text = text;
-        this.createdAt= createdAt;
-        this.username = username;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.userId = userId;
+        this.productId = productId;
         this.commentId = commentId;
     }
 
@@ -28,7 +32,9 @@ public class CommentOutputModel {
                 comment.getId(),
                 comment.getText(),
                 comment.getCreatedAt(),
-                comment.getUser().getUsername(),
+                comment.getUpdatedAt(),
+                comment.getUser().getId(),
+                comment.getProduct().getId(),
                 comment.getComment());
     }
 }
