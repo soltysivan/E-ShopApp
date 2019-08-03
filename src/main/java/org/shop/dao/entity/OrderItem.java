@@ -20,4 +20,7 @@ public class OrderItem {
     @ManyToOne
     private Product product;
 
+    public OrderItem(int quantity) {
+        this.quantity = quantity;
+    }
 }

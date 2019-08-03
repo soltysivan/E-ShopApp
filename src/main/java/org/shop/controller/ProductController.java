@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shop/products")
-@Api(value = "Product", description = "All functions width Product", basePath = "/api/shop/products")
+@Api(value = "Product", description = "All functions with Product", basePath = "/api/shop/products")
 public class ProductController {
 
     @Autowired

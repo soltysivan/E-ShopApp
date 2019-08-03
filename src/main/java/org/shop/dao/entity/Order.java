@@ -2,6 +2,7 @@ package org.shop.dao.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "orders")
 public class Order {
     @Id
@@ -21,6 +23,7 @@ public class Order {
     @Column(name = "created_at")
     private Date createdAt;
 
+    @ToString.Exclude
     @JsonIgnore
     @ManyToOne
     private User user;
@@ -34,4 +37,8 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
+    public Order(Date createdAt, String comment) {
+        this.createdAt = createdAt;
+        this.comment = comment;
+    }
 }

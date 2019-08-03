@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shop/comments")
-@Api(value = "Comments", description = "Comments of product", basePath = "/api/shop/comments")
+@Api(value = "Comment", description = "Comments of product", basePath = "/api/shop/comments")
 public class CommentController {
 
     @Autowired

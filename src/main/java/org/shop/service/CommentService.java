@@ -44,6 +44,7 @@ public class CommentService {
         Product product = productRepository.findById(commentInputModel.getProductId())
                 .orElseThrow(NotFoundExceptions::new);
         Comment comment = CommentInputModel.of(commentInputModel);
+        comment.setCreatedAt(new Date());
         comment.setUser(author);
         comment.setProduct(product);
         commentRepository.save(comment);
@@ -63,6 +64,7 @@ public class CommentService {
         Comment saved = commentRepository.findById(commentInputModel.getComment_id())
                 .orElseThrow(NotFoundExceptions::new);
         Comment comment = CommentInputModel.of(commentInputModel);
+        comment.setCreatedAt(new Date());
         comment.setUser(saved.getUser());
         comment.setProduct(saved.getProduct());
         comment.setParent(saved);

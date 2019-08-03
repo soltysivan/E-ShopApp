@@ -1,8 +1,13 @@
 package org.shop.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.shop.dao.entity.Order;
 import org.shop.dao.repository.OrderRepository;
 import org.shop.dao.repository.UserRepository;
+import org.shop.model.input.OrderInputModel;
+import org.shop.model.output.OrderOutputModel;
 import org.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +18,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shop")
+@RequestMapping("/api/shop/orders")
+@Api(value = "Order", description = "Users order", basePath = "/api/shop/orders")
 public class OrderController {
 
     @Autowired
@@ -25,28 +31,51 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/users/{userId}/orders")
-    public ResponseEntity<List<Order>> getAllUserOrders(@PathVariable Long userId){
-        List<Order> orders = orderService.findAllOrdersByUser(userId);
+    @ApiOperation(value = "Get all orders")
+    @GetMapping
+    private ResponseEntity<List<OrderOutputModel>> getAllOrders(){
+        List<OrderOutputModel> orderOutputModels = orderService.findAll();
+        return new ResponseEntity<>(orderOutputModels, HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "Get all orders by User id")
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<OrderOutputModel>> getAllUserOrders(
+            @ApiParam(value = "User param id", example = "1")@PathVariable Long userId){
+        List<OrderOutputModel> orders = orderService.findAllOrdersByUser(userId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
-    @PostMapping("/users/{userId}/orders")
-    public ResponseEntity<Order> createNewOrder(@PathVariable Long userId,
-                                                @Valid @RequestBody Order order){
-        Order orderForDB = orderService.saveOrder(userId, order);
-        return new ResponseEntity<>(orderForDB, HttpStatus.OK);
+    @ApiOperation(value = "Get order by id")
+    @GetMapping("{orderId}")
+    public ResponseEntity<OrderOutputModel> getOrderById(
+            @ApiParam(value = "Order param id", example = "1")@PathVariable Long orderId){
+        OrderOutputModel order = orderService.findOrderById(orderId);
+        return new ResponseEntity<>(order ,HttpStatus.OK);
     }
 
-    @PutMapping("/orders/{orderId}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long orderId,
-                                             @Valid @RequestBody Order order){
-        Order orderForDb = orderService.updateOrder(orderId, order);
-        return new ResponseEntity<>(orderForDb, HttpStatus.OK);
+    @ApiOperation(value = "Create new order")
+    @PostMapping
+    public ResponseEntity<OrderOutputModel> createNewOrder(
+            @ApiParam(value = "Request body Order", required = true)@Valid @RequestBody OrderInputModel orderInputModel){
+        OrderOutputModel orderOutputModel = orderService.saveOrder(orderInputModel);
+        return new ResponseEntity<>(orderOutputModel, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/orders/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId){
+    @ApiOperation(value = "Update order")
+    @PutMapping("{orderId}")
+    public ResponseEntity<OrderOutputModel> updateOrder(
+            @ApiParam(value = "Order param id", example = "1")@PathVariable Long orderId,
+            @ApiParam(value = "Request body Order", required = true)@Valid @RequestBody Order order){
+        OrderOutputModel orderForDb = orderService.updateOrder(orderId, order);
+        return new ResponseEntity<>(orderForDb, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Delete order by id")
+    @DeleteMapping("{orderId}")
+    public void deleteOrder(
+            @ApiParam(value = "Order param id", example = "1")@PathVariable Long orderId){
         orderRepository.deleteById(orderId);
     }
 }
