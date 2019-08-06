@@ -10,9 +10,7 @@ Api service for work with products
 * Comments
 # Run Local
 
-
-> '$ mvn spring-boot:run'
-
+**$ mvn spring-boot:run**
 
 Application will run by default on port 8080
 
