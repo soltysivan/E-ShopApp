@@ -17,7 +17,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoriesRepositories;
 
-    public Category update(Long id, Category category) {
+    public Category update(Long id, CategoryInputModel category) {
         Category categoryFromDB = categoriesRepositories.findById(id)
                 .orElseThrow(NotFoundExceptions::new);
         categoryFromDB.setDescription(category.getDescription());
@@ -31,7 +31,7 @@ public class CategoryService {
                 .stream().filter(category1 -> category1.getName().equals(category.getName()))
                 .collect(Collectors.toList());
        if(categories.size() != 0){
-           throw new IllegalArgumentException("Category width the name is already exists");
+           throw new IllegalArgumentException("Category with the name is already exists");
        }
         return categoriesRepositories.save(category);
     }

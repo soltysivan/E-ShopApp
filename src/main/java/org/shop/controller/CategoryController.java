@@ -39,6 +39,7 @@ public class CategoryController {
     @GetMapping("{categoryId}")
     public ResponseEntity<Category> getCategoryById(
             @ApiParam(value = "Category param id", example = "1")@PathVariable Long categoryId){
+        Long i = 2L;
         Category category = categoriesRepositories.findById(categoryId)
                 .orElseThrow(NotFoundExceptions::new);
         return new ResponseEntity<>(category, HttpStatus.OK);
@@ -56,7 +57,7 @@ public class CategoryController {
     @PutMapping("{categoryId}")
     public ResponseEntity<Category> updateCategories(
             @ApiParam(value = "Category param id", example = "1") @PathVariable Long categoryId,
-            @ApiParam(value = "Request body Category", required = true)@Valid @RequestBody Category category){
+            @ApiParam(value = "Request body Category", required = true)@Valid @RequestBody CategoryInputModel category){
         Category categoryDB = categoryService.update(categoryId, category);
         return new ResponseEntity<>(categoryDB, HttpStatus.CREATED);
     }
