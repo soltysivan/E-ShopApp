@@ -2,9 +2,9 @@
 SoftServe IT Academy Summer Internship 2019
 # About 
 Api service for work with products
-> mkmkmkk
-dir /fonts
---- 
-k
-*** 
-k
+> Categoties
+> Products
+> Articles
+> Order
+> Order-items
+> Comments
