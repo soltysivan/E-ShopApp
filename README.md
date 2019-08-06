@@ -1,5 +1,5 @@
-# E-ShopApp
-SoftServe IT Academy Summer Internship 2019
+h1 E-ShopApp
+h2 SoftServe IT Academy Summer Internship 2019
 # About 
 Api service for work with products
 * Categoties
