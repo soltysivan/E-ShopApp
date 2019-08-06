@@ -9,10 +9,11 @@ Api service for work with products
 * Order-items
 * Comments
 # Run Local
-code block
-''''''''
-$ mvn spring-boot:run
-''''''''
+
+
+> '$ mvn spring-boot:run'
+
+
 Application will run by default on port 8080
 
 Configure the port by changing server.port in application.properties
