@@ -27,6 +27,17 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoriesRepositories;
 
+    public List<Product> findProductsById(String[] productsId){
+        List<Product> products = new ArrayList<>();
+        for (int i = 0; i<productsId.length; i++){
+            Product product = productRepository.findProductById((Long.valueOf(productsId[i])));
+            if (product != null){
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
     public List<ProductOutputModel> findAllByCategory(Long id) {
         List<Product> products = productRepository.findAll()
                 .stream().filter(product -> product.getCategory().getId().equals(id))

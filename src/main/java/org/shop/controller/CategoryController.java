@@ -32,7 +32,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories(){
         List<Category> categories = categoriesRepositories.findAll();
-        return new ResponseEntity<>(categories, HttpStatus.CREATED);
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get category by: id")
