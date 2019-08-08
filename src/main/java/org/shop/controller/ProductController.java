@@ -52,7 +52,7 @@ public class ProductController {
 
     @ApiOperation(value = "Get products by many [productsId]")
     @GetMapping("/list")
-    public ResponseEntity<List<Product>> getProduct(
+    public ResponseEntity<List<Product>> getProducts(
             @ApiParam(value = "Request param String [productsId]", required = true)@RequestParam String[] productId){
         List<Product> products = productService.findProductsById(productId);
         return new ResponseEntity<>(products, HttpStatus.OK);
