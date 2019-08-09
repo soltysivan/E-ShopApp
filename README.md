@@ -15,3 +15,5 @@ Api service for work with products
 Application will run by default on port 8080
 
 Configure the port by changing server.port in application.properties
+
+Link on swagger <https://shop-shop.herokuapp.com/swagger-ui.html#/>
